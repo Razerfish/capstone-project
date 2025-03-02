@@ -7,9 +7,9 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
-                "${file}",
+                "${workspaceFolder}/cpp/test.cpp",
                 "-o",
-                "${fileDirname}/${fileBasenameNoExtension}",
+                "${workspaceFolder}/build/test.out",
                 "-I/usr/include/gtkmm-3.0",
                 "-I/usr/lib/x86_64-linux-gnu/gtkmm-3.0/include",
                 "-I/usr/include/giomm-2.4",
