@@ -5,11 +5,39 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "(gdb) Launch",
+            "name": "(gdb) Launch (Stillframe)",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/test.out",
-            "args": [],
+            "args": [
+                "stillframe"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "(gdb) Launch (Animated)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/test.out",
+            "args": [
+                "animated"
+            ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
@@ -28,6 +56,5 @@
                 }
             ]
         }
-
     ]
 }
