@@ -3,6 +3,7 @@
 
 int main(int argc, char *argv[])
 {
+    // Boilerplate from example in the documentation.
     int argc1 = 1;
     auto app =
         Gtk::Application::create(argc1, argv,
@@ -10,6 +11,7 @@ int main(int argc, char *argv[])
     Gtk::Window window;
     window.set_default_size(2560, 1440);
 
+    // Choose between animated and stillframe based on argv.
     std::string path;
     if (argc == 1)
     {
@@ -25,11 +27,12 @@ int main(int argc, char *argv[])
         path = "assets/background.gif";
     }
 
-
+    // Initialize image widget.
     Gtk::Image image = Gtk::Image(path);
     window.add(image);
     window.show_all_children();
 
+    // Set window type hint.
     window.set_type_hint(Gdk::WINDOW_TYPE_HINT_DESKTOP);
     return app->run(window);
 }
