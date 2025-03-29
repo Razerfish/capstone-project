@@ -1,8 +1,14 @@
 #include <gtkmm.h>
 #include <string>
+#include <iostream>
+
+#include "AppInfo.h"
 
 int main(int argc, char *argv[])
 {
+    std::cout << "Version: " << AppInfo_VERSION_MAJOR << "."
+        << AppInfo_VERSION_MINOR << std::endl;
+
     // Boilerplate from example in the documentation.
     int argc1 = 1;
     auto app =
