@@ -13,5 +13,4 @@ add_executable(main main.cpp)
 target_link_libraries(main PUBLIC BackgroundWindow)
 target_include_directories(main PUBLIC
     "${PROJECT_BINARY_DIR}/src"
-    "${PROJECT_SOURCE_DIR}/src/BackgroundWindow"
 )
