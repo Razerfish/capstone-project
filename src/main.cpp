@@ -32,7 +32,8 @@ int main(int argc, char *argv[])
         path = "assets/background.gif";
     }
 
-    BackgroundWindow window = BackgroundWindow(path, 2560, 1440);
+    //BackgroundWindow window = BackgroundWindow(path, 2560, 1440);
+    BackgroundWindow window = BackgroundWindow("assets/Untitled3333.mp4", 2560, 1440);
 
     return app->run(window);
 }
