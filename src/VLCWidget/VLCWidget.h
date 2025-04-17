@@ -1,9 +1,12 @@
 #pragma once
 
 #include <gtkmm.h>
+#include <gdk/gdkx.h>
 // TODO: Decide if we need string or not.
 #include <string>
 #include <vlcpp/vlc.hpp>
+
+#include <iostream>
 
 class VLCWidget : public Gtk::DrawingArea
 {
@@ -15,16 +18,14 @@ protected:
     int
         height,
         width;
-    
-    uint32_t id;
 
     VLC::Instance instance;
     VLC::Media media;
     VLC::MediaPlayer player;
 
     // OVERRIDES
-    void get_preferred_width_vfunc(int& minimum_width, int& natural_width) const override;
-    void get_preferred_height_vfunc(int& minimum_height, int& natural_height) const override;
+    //void get_preferred_width_vfunc(int& minimum_width, int& natural_width) const override;
+    //void get_preferred_height_vfunc(int& minimum_height, int& natural_height) const override;
 
     //void get_preferred_height_for_width_vfunc(int width, int& minimum_height, int& natural_height) const override;
     //void get_preferred_width_for_height_vfunc(int height, int& mimimum_width, int& natural_width) const override;
@@ -39,6 +40,5 @@ protected:
     bool on_draw(const Cairo::RefPtr<Cairo::Context>& ctr) override;
 
 public:
-    void setID(uint32_t id);
     void play();
 };
