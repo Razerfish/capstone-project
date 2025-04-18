@@ -5,11 +5,7 @@ VLCWidget::VLCWidget(std::string path, int width, int height) : Gtk::DrawingArea
     this->height = height;
     this->width = width;
 
-    int argCount = 1;
-    // This results in a warning but I don't think there's any other way to do this.
-    char* args = "--no-disable-screensaver";
-
-    instance = VLC::Instance(argCount, &args);
+    instance = VLC::Instance(0, nullptr);
 
 #if LIBVLC_VERSION_INT >= LIBVLC_VERSION(4, 0, 0, 0)
     media = VLC::Media(path, VLC::Media::FromPath);
