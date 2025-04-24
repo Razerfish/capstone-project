@@ -14,4 +14,6 @@ public:
 protected:
     //Gtk::Image background_image;
     VLCWidget vlc;
+
+    bool start_playback();
 };

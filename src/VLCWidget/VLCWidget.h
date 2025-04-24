@@ -18,10 +18,19 @@ protected:
     int
         height,
         width;
+    bool is_playing;
 
     VLC::Instance instance;
     VLC::Media media;
     VLC::MediaPlayer player;
+
+    // CALLBACKS
+    sigc::slot<bool> replay_slot;
+    sigc::connection replay_timer;
+    
+    void enable_replay();
+    void cancel_replay();
+    bool replay_callback();
 
     // OVERRIDES
     //void get_preferred_width_vfunc(int& minimum_width, int& natural_width) const override;
@@ -40,5 +49,6 @@ protected:
     bool on_draw(const Cairo::RefPtr<Cairo::Context>& ctr) override;
 
 public:
-    void play();
+    bool play(bool replay);
+    bool bind_window();
 };
