@@ -1,3 +1,0 @@
-[submodule "include/libvlcpp"]
-	path = include/libvlcpp
-	url = https://code.videolan.org/videolan/libvlcpp.git
