@@ -32,6 +32,7 @@ public:
     void toggle_pause();
     bool is_playing();
 
+    // Volume functions currently broken.
     double get_volume();
     void set_volume(double volume);
 
