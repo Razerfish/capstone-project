@@ -22,9 +22,6 @@ protected:
     libvlc_instance_t* instance;
     libvlc_media_t* media;
     libvlc_media_player_t* player;
-    
-    // OVERRIDES
-    //bool on_draw(const Cairo::RefPtr<Cairo::Context>& ctr) override;
 
 public:
     bool play();
