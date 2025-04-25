@@ -1,6 +1,7 @@
 #pragma once
 
 #include <gtkmm.h>
+#include <gdk/gdkx.h>
 #include <string>
 #include <tuple>
 
@@ -17,7 +18,13 @@ protected:
         height,
         width;
 
-    VLCWidget vlc;
+    VLCWidget* vlc;
+
+    sigc::slot<bool> check_ready_slot = sigc::mem_fun(*this, &BackgroundWindow::check_ready);
+    sigc::connection check_ready_callback;
+
+    // Callbacks
+    bool check_ready();
 
     // Static helper functions.
     static std::tuple<int, int> get_resolution(Glib::RefPtr<const Gdk::Display> display);

@@ -1,6 +1,6 @@
 #include "VLCWidget.h"
 
-VLCWidget::VLCWidget(std::string path, int width, int height) : Gtk::DrawingArea()
+VLCWidget::VLCWidget(std::string path) : Gtk::DrawingArea()
 {
     this->height = height;
     this->width = width;
@@ -18,18 +18,14 @@ VLCWidget::~VLCWidget()
     libvlc_release(instance);
 }
 
-bool VLCWidget::on_draw(const Cairo::RefPtr<Cairo::Context> &ctr)
-{
-    auto window = this->get_window();
-    auto xid = gdk_x11_window_get_xid(window.get()->gobj());
-    std::cout << "Window xid: " << xid << std::endl;
-    libvlc_media_player_set_xwindow(player, xid);
-    libvlc_video_set_scale(player, 0);
-    return true;
-}
-
 bool VLCWidget::play()
 {
     libvlc_media_player_play(player);
     return libvlc_media_player_is_playing(player);
+}
+
+void VLCWidget::bind_window(XID xid)
+{
+    libvlc_media_player_set_xwindow(player, xid);
+    libvlc_video_set_scale(player, 0);
 }

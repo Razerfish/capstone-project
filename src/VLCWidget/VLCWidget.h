@@ -1,6 +1,6 @@
 #pragma once
 
-#include <gtkmm.h>
+#include <gtkmm/drawingarea.h>
 #include <gdk/gdkx.h>
 // TODO: Decide if we need string or not.
 #include <string>
@@ -11,7 +11,7 @@
 class VLCWidget : public Gtk::DrawingArea
 {
 public:
-    VLCWidget(std::string path, int height, int width);
+    VLCWidget(std::string path);
     virtual ~VLCWidget();
 
 protected:
@@ -24,9 +24,9 @@ protected:
     libvlc_media_player_t* player;
     
     // OVERRIDES
-    bool on_draw(const Cairo::RefPtr<Cairo::Context>& ctr) override;
+    //bool on_draw(const Cairo::RefPtr<Cairo::Context>& ctr) override;
 
 public:
     bool play();
-    bool bind_window();
+    void bind_window(XID xid);
 };
