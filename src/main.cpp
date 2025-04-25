@@ -33,7 +33,9 @@ int main(int argc, char *argv[])
     }
 
     //BackgroundWindow window = BackgroundWindow(path, 2560, 1440);
-    BackgroundWindow window = BackgroundWindow("assets/Untitled3333.mp4", 2560, 1440);
+    BackgroundWindow window = BackgroundWindow("assets/short.mp4");
+
+    auto windows = app->get_windows();
 
     return app->run(window);
 }
