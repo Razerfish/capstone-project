@@ -1,12 +1,12 @@
 #include "VLCWidget.h"
+#include "vlc_args.h"
 
 VLCWidget::VLCWidget(std::string path) : Gtk::DrawingArea()
 {
     this->height = height;
     this->width = width;
 
-    const char* args[] = {"--input-repeat=65545", "--no-disable-screensaver"};
-    instance = libvlc_new(2, args);
+    instance = libvlc_new(VLC_ARG_COUNT, VLC_ARGS);
     media = libvlc_media_new_path(instance, path.c_str());
     player = libvlc_media_player_new_from_media(media);
 }
