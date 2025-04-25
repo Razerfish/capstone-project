@@ -11,7 +11,7 @@
 class VLCWidget : public Gtk::DrawingArea
 {
 public:
-    VLCWidget(std::string path);
+    VLCWidget();
     virtual ~VLCWidget();
 
 protected:
@@ -20,10 +20,25 @@ protected:
         width;
 
     libvlc_instance_t* instance;
-    libvlc_media_t* media;
     libvlc_media_player_t* player;
 
 public:
+    void set_media(std::string path);
+
     bool play();
+    void stop();
+    void pause();
+    void unpause();
+    void toggle_pause();
+    bool is_playing();
+
+    double get_volume();
+    void set_volume(double volume);
+
+    bool is_muted();
+    void mute();
+    void unmute();
+    void toggle_mute();
+
     void bind_window(XID xid);
 };

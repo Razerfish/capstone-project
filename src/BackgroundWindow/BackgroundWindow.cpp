@@ -10,7 +10,8 @@ BackgroundWindow::BackgroundWindow(std::string path)
         throw std::runtime_error("Unable to get primary monitor resolution");
     }
 
-    vlc = new VLCWidget(path);
+    vlc = new VLCWidget();
+    vlc->set_media(path);
 
     // Set our ideal size, add and show the vlc widget and set our type hint so we show up properly.
     set_default_size(width, height);
