@@ -2,10 +2,13 @@
 
 BackgroundWindow::BackgroundWindow(std::string path)
 {
-    std::tuple<int, int> resolution = BackgroundWindow::get_resolution(get_display());
+    BackgroundWindow::get_resolution(get_display(), height, width);
 
-    this->height = std::get<0>(resolution);
-    this->width = std::get<1>(resolution);
+    // Check that we were able to actually get the resolution.
+    if (height == -1 || width == -1)
+    {
+        throw std::runtime_error("Unable to get primary monitor resolution");
+    }
 
     vlc = new VLCWidget(path);
 
@@ -40,14 +43,27 @@ bool BackgroundWindow::check_ready()
     return true; // Check again later.
 }
 
-std::tuple<int, int> BackgroundWindow::get_resolution(Glib::RefPtr<const Gdk::Display> display)
+void BackgroundWindow::get_resolution(Glib::RefPtr<const Gdk::Display> display, int& height, int& width)
 {
-    // TODO: Implement checking for null.
-    Glib::RefPtr<const Gdk::Monitor> monitor = display->get_primary_monitor();
-    int scale = monitor->get_scale_factor();
+    // Ensure that display is not null.
+    if (display)
+    {
+        Glib::RefPtr<const Gdk::Monitor> monitor = display->get_primary_monitor();
+        if (monitor)
+        {
+            int scale = monitor->get_scale_factor();
 
-    Gdk::Rectangle geometry;
-    monitor->get_geometry(geometry);
+            Gdk::Rectangle geometry;
+            monitor->get_geometry(geometry);
 
-    return std::tuple<int, int>(geometry.get_height() * scale, geometry.get_width() * scale);
+            height = geometry.get_height();
+            width = geometry.get_width();
+            return;
+        }
+    }
+
+    // Unable to get monitor resolution.
+    height = -1;
+    width = -1;
+    return;
 }

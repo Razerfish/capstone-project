@@ -3,7 +3,6 @@
 #include <gtkmm.h>
 #include <gdk/gdkx.h>
 #include <string>
-#include <tuple>
 
 #include "VLCWidget.h"
 
@@ -27,5 +26,5 @@ protected:
     bool check_ready();
 
     // Static helper functions.
-    static std::tuple<int, int> get_resolution(Glib::RefPtr<const Gdk::Display> display);
+    static void get_resolution(Glib::RefPtr<const Gdk::Display> display, int& height, int& width);
 };
