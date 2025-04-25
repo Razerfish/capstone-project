@@ -4,27 +4,19 @@ VLCWidget::VLCWidget(std::string path, int width, int height) : Gtk::DrawingArea
 {
     this->height = height;
     this->width = width;
-    this->is_playing = false;
 
-    instance = VLC::Instance(0, nullptr);
-
-#if LIBVLC_VERSION_INT >= LIBVLC_VERSION(4, 0, 0, 0)
-    media = VLC::Media(path, VLC::Media::FromPath);
-    player = VLC::MediaPlayer(instance, media);
-#else
-    media = VLC::Media(instance, path, VLC::Media::FromPath);
-    player = VLC::MediaPlayer(media);
-#endif
-
-    replay_slot = sigc::mem_fun(*this, &VLCWidget::replay_callback);
+    const char* args[] = {"--input-repeat=65545", "--no-disable-screensaver"};
+    instance = libvlc_new(2, args);
+    media = libvlc_media_new_path(instance, path.c_str());
+    player = libvlc_media_player_new_from_media(media);
 }
-
 
 VLCWidget::~VLCWidget()
 {
-    cancel_replay();
+    libvlc_media_release(media);
+    libvlc_media_player_release(player);
+    libvlc_release(instance);
 }
-
 
 /*
 void VLCWidget::get_preferred_width_vfunc(int &minimum_width, int &natural_width) const
@@ -32,7 +24,6 @@ void VLCWidget::get_preferred_width_vfunc(int &minimum_width, int &natural_width
     minimum_width = width;
     natural_width = width;
 }
-
 
 void VLCWidget::get_preferred_height_vfunc(int &minimum_height, int &natural_height) const
 {
@@ -60,63 +51,13 @@ bool VLCWidget::on_draw(const Cairo::RefPtr<Cairo::Context> &ctr)
     auto window = this->get_window();
     auto xid = gdk_x11_window_get_xid(window.get()->gobj());
     std::cout << "Window xid: " << xid << std::endl;
-    player.setXwindow(xid);
+    libvlc_media_player_set_xwindow(player, xid);
+    libvlc_video_set_scale(player, 0);
     return true;
 }
 
-void VLCWidget::enable_replay()
+bool VLCWidget::play()
 {
-    if (this->replay_timer.empty())
-    {
-        //int duration = player.length();
-        auto x = libvlc_media_get_duration(media.get());
-        libvlc_time_t y = libvlc_media_player_get_length(player.get());
-        int duration = 10000;
-        replay_timer = Glib::signal_timeout().connect(replay_slot, duration);
-    }
-    else
-    {
-        std::cout << "Replay is already active!" << std::endl;
-    }
-}
-
-void VLCWidget::cancel_replay()
-{
-    if (replay_timer.empty())
-    {
-        std::cout << "Replay is not active!" << std::endl;
-    }
-    else
-    {
-        replay_timer.disconnect();
-    }
-}
-
-bool VLCWidget::replay_callback()
-{
-    player.setPosition(0.0);
-    if (!player.isPlaying())
-    {
-        player.play();
-    }
-
-    return true;
-}
-
-bool VLCWidget::play(bool replay)
-{
-    player.play();
-    if (replay)
-        enable_replay();
-    
-    return player.isPlaying();
-}
-
-bool VLCWidget::bind_window()
-{
-    auto window = this->get_window();
-    auto xid = gdk_x11_window_get_xid(window.get()->gobj());
-    std::cout << "Window xid: " << xid << std::endl;
-    player.setXwindow(xid);
-    return true;
+    libvlc_media_player_play(player);
+    return libvlc_media_player_is_playing(player);
 }

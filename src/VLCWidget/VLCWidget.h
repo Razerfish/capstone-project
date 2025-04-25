@@ -4,7 +4,7 @@
 #include <gdk/gdkx.h>
 // TODO: Decide if we need string or not.
 #include <string>
-#include <vlcpp/vlc.hpp>
+#include <vlc/vlc.h>
 
 #include <iostream>
 
@@ -18,26 +18,14 @@ protected:
     int
         height,
         width;
-    bool is_playing;
 
-    VLC::Instance instance;
-    VLC::Media media;
-    VLC::MediaPlayer player;
-
-    // CALLBACKS
-    sigc::slot<bool> replay_slot;
-    sigc::connection replay_timer;
+    libvlc_instance_t* instance;
+    libvlc_media_t* media;
+    libvlc_media_player_t* player;
     
-    void enable_replay();
-    void cancel_replay();
-    bool replay_callback();
-
     // OVERRIDES
     //void get_preferred_width_vfunc(int& minimum_width, int& natural_width) const override;
     //void get_preferred_height_vfunc(int& minimum_height, int& natural_height) const override;
-
-    //void get_preferred_height_for_width_vfunc(int width, int& minimum_height, int& natural_height) const override;
-    //void get_preferred_width_for_height_vfunc(int height, int& mimimum_width, int& natural_width) const override;
 
     //void on_size_allocate(Gtk::Allocation& allocation) override;
 
@@ -49,6 +37,6 @@ protected:
     bool on_draw(const Cairo::RefPtr<Cairo::Context>& ctr) override;
 
 public:
-    bool play(bool replay);
+    bool play();
     bool bind_window();
 };
