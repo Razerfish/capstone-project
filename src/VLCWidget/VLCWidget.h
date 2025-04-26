@@ -18,6 +18,8 @@ protected:
     int
         height,
         width;
+    
+    bool bound;
 
     std::string media_path;
 
@@ -51,6 +53,9 @@ public:
     void bind_window(XID xid);
 
 private:
+    // Signal handler overrides.
+    bool on_draw(const Cairo::RefPtr<Cairo::Context> &ctr) override;
+
     // Mute workaround callback.
     // p_player should point to the player.
     static void mute_when_ready_workaround(const struct libvlc_event_t* event, void* p_player);

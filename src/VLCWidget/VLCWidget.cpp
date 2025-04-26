@@ -6,6 +6,7 @@ VLCWidget::VLCWidget() : Gtk::DrawingArea()
     this->height = height;
     this->width = width;
 
+    bound = false;
     media_path = "";
 
     instance = libvlc_new(VLC_ARG_COUNT, VLC_ARGS);
@@ -166,6 +167,19 @@ void VLCWidget::bind_window(XID xid)
 {
     libvlc_media_player_set_xwindow(player, xid);
     libvlc_video_set_scale(player, 0);
+    bound = true;
+}
+
+// Rebind window on redraw to prevent flickering.
+bool VLCWidget::on_draw(const Cairo::RefPtr<Cairo::Context> &ctr)
+{
+    if (bound)
+    {
+        XID xid = gdk_x11_window_get_xid(get_window()->gobj());
+        libvlc_media_player_set_xwindow(player, xid);
+    }
+
+    return true;
 }
 
 void VLCWidget::mute_when_ready_workaround(const struct libvlc_event_t* event, void* p_player)
