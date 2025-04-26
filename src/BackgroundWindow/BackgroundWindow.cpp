@@ -11,7 +11,7 @@ BackgroundWindow::BackgroundWindow(std::string path)
     }
 
     vlc = new VLCWidget();
-    vlc->set_media(path);
+    vlc->set_media_from_path(path);
 
     // Set our ideal size, add and show the vlc widget and set our type hint so we show up properly.
     set_default_size(width, height);
@@ -51,7 +51,7 @@ bool BackgroundWindow::check_ready()
 void BackgroundWindow::swap_media(std::string path)
 {
     std::cout << "Swapping media" << std::endl;
-    vlc->set_media(path);
+    vlc->set_media_from_path(path);
 }
 
 void BackgroundWindow::get_resolution(Glib::RefPtr<const Gdk::Display> display, int& height, int& width)

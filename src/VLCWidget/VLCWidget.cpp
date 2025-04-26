@@ -6,6 +6,8 @@ VLCWidget::VLCWidget() : Gtk::DrawingArea()
     this->height = height;
     this->width = width;
 
+    media_path = "";
+
     instance = libvlc_new(VLC_ARG_COUNT, VLC_ARGS);
     player = libvlc_media_player_new(instance);
 }
@@ -22,30 +24,6 @@ VLCWidget::~VLCWidget()
 
     libvlc_media_player_release(player);
     libvlc_release(instance);
-}
-
-void VLCWidget::set_media(std::string path)
-{
-    libvlc_media_t* media = libvlc_media_new_path(instance, path.c_str());
-
-    // Ensure that media loaded successfully.
-    if (!media)
-    {
-        throw std::runtime_error("Unable to initialize media from path, are you sure your path is correct?");
-    }
-    else
-    {
-        bool was_playing = libvlc_media_player_is_playing(player);
-
-        libvlc_media_player_stop(player);
-        libvlc_media_player_set_media(player, media);
-        libvlc_media_player_set_position(player, 0.0);
-
-        if (was_playing)
-            libvlc_media_player_play(player);
-        
-        libvlc_media_release(media);
-    }
 }
 
 bool VLCWidget::play()
@@ -66,6 +44,36 @@ bool VLCWidget::play()
         std::cout << "Failed to bind mute_when_ready_workaround callback" << std::endl;
 
     return libvlc_media_player_is_playing(player);
+}
+
+void VLCWidget::set_media_from_path(std::string path)
+{
+    libvlc_media_t* media = libvlc_media_new_path(instance, path.c_str());
+
+    // Ensure that media loaded successfully.
+    if (!media)
+    {
+        throw std::runtime_error("Unable to initialize media from path, are you sure your path is correct?");
+    }
+    else
+    {
+        media_path = path;
+        bool was_playing = libvlc_media_player_is_playing(player);
+
+        libvlc_media_player_stop(player);
+        libvlc_media_player_set_media(player, media);
+        libvlc_media_player_set_position(player, 0.0);
+
+        if (was_playing)
+            libvlc_media_player_play(player);
+        
+        libvlc_media_release(media);
+    }
+}
+
+std::string VLCWidget::get_media_path()
+{
+    return media_path;
 }
 
 void VLCWidget::stop()

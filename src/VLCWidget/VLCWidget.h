@@ -19,13 +19,17 @@ protected:
         height,
         width;
 
+    std::string media_path;
+
     libvlc_instance_t* instance;
     libvlc_media_player_t* player;
 
 public:
-    void set_media(std::string path);
-
     bool play();
+
+    void set_media_from_path(std::string path);
+    std::string get_media_path();
+
     void stop();
     void pause();
     void unpause();
