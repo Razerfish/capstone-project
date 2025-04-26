@@ -2,7 +2,6 @@
 
 #include <gtkmm/drawingarea.h>
 #include <gdk/gdkx.h>
-// TODO: Decide if we need string or not.
 #include <string>
 #include <vlc/vlc.h>
 
