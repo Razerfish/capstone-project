@@ -25,6 +25,7 @@ BackgroundWindow::BackgroundWindow(std::string path)
 
 BackgroundWindow::~BackgroundWindow()
 {
+    swap_media_slot.disconnect();
     check_ready_callback.disconnect();
     delete vlc;
 }
@@ -40,9 +41,17 @@ bool BackgroundWindow::check_ready()
         vlc->bind_window(win_id);
         vlc->play();
 
+        //swap_media_slot = sigc::bind(sigc::mem_fun(*this, &BackgroundWindow::swap_media), "assets/short.mp4");
+        //Glib::signal_timeout().connect_once(swap_media_slot, 5000);
         return false; // Don't run this callback again.
     }
     return true; // Check again later.
+}
+
+void BackgroundWindow::swap_media(std::string path)
+{
+    std::cout << "Swapping media" << std::endl;
+    vlc->set_media(path);
 }
 
 void BackgroundWindow::get_resolution(Glib::RefPtr<const Gdk::Display> display, int& height, int& width)

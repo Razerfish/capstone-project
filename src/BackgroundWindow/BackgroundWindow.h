@@ -23,10 +23,13 @@ protected:
     VLCWidget* vlc;
 
     sigc::slot<bool> check_ready_slot = sigc::mem_fun(*this, &BackgroundWindow::check_ready);
+    sigc::slot<void> swap_media_slot;
+    
     sigc::connection check_ready_callback;
 
     // Callbacks
     bool check_ready();
+    void swap_media(std::string path);
 
     // Static helper functions.
     static void get_resolution(Glib::RefPtr<const Gdk::Display> display, int& height, int& width);
