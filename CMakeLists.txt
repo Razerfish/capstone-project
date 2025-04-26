@@ -5,3 +5,6 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_subdirectory(src)
+
+# Create logging directory.
+file(MAKE_DIRECTORY logs)

@@ -5,11 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "(gdb) Launch main (static)",
+            "name": "(gdb) Launch main (Pick Video)",
             "type": "cppdbg",
             "request": "launch",
             "program": "${command:cmake.launchTargetPath}",
-            "args": [],
+            "args": ["${input:assetVideo}"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [
@@ -31,11 +31,11 @@
             ]
         },
         {
-            "name": "(gdb) Launch main (animated)",
+            "name": "(gdb) Launch main (Custom Video)",
             "type": "cppdbg",
             "request": "launch",
             "program": "${command:cmake.launchTargetPath}",
-            "args": ["animated"],
+            "args": ["${input:customVideo}"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [
@@ -56,6 +56,23 @@
                 }
             ]
         }
-
+    ],
+    "inputs": [
+        {
+            "id": "assetVideo",
+            "type": "pickString",
+            "description": "Select a video from assets to play",
+            "options": [
+                "assets/short.mp4",
+                "assets/color_test.mp4"
+            ],
+            "default": "assets/short.mp4"
+        },
+        {
+            "id": "customVideo",
+            "type": "promptString",
+            "description": "Path to video to run with",
+            "default": "assets/short.mp4"
+        }
     ]
 }
