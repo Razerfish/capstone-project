@@ -166,5 +166,5 @@ void VLCWidget::mute_when_ready_workaround(const struct libvlc_event_t* event, v
     if (libvlc_audio_set_volume(player, 0) == 0)
         std::cout << "Workaround volume set successfully" << std::endl;
     else
-        std::cout << "Failed to set volume in workaround" << std::endl;
+        std::cout << "Failed to set volume in workaround, video might not have any audio tracks" << std::endl;
 }
