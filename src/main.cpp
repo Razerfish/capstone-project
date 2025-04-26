@@ -18,7 +18,6 @@ int main(int argc, char *argv[])
     }
     path = std::string(argv[1]);
 
-    // Boilerplate from example in the documentation.
     int dummy_argc = 1;
     auto app =
         Gtk::Application::create(dummy_argc, argv,
