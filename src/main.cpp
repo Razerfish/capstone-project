@@ -10,30 +10,21 @@ int main(int argc, char *argv[])
     std::cout << "Version: " << AppInfo_VERSION_MAJOR << "."
         << AppInfo_VERSION_MINOR << std::endl;
 
-    // Boilerplate from example in the documentation.
-    int argc1 = 1;
-    auto app =
-        Gtk::Application::create(argc1, argv,
-                                 "org.Razerfish.AnimWallpapers.testing");
-
-    // Choose between animated and stillframe based on argv.
     std::string path;
     if (argc == 1)
     {
-        // Default to stillframe.
-        path = "assets/background.jpg";
+        std::cout << "Must specify a video to display" << std::endl;
+        return 1;
     }
-    else if (argc > 1 && std::string(argv[1]) == "stillframe")
-    {
-        path = "assets/background.jpg";
-    }
-    else if (argc > 1 && std::string(argv[1]) == "animated")
-    {
-        path = "assets/background.gif";
-    }
+    path = std::string(argv[1]);
 
-    //BackgroundWindow window = BackgroundWindow(path, 2560, 1440);
-    BackgroundWindow window = BackgroundWindow("assets/short.mp4");
+    // Boilerplate from example in the documentation.
+    int dummy_argc = 1;
+    auto app =
+        Gtk::Application::create(dummy_argc, argv,
+                                 "org.Razerfish.AnimWallpapers.testing");
+
+    BackgroundWindow window = BackgroundWindow(path);
 
     auto windows = app->get_windows();
 
