@@ -12,6 +12,14 @@ VLCWidget::VLCWidget() : Gtk::DrawingArea()
 
 VLCWidget::~VLCWidget()
 {
+    // Cleanup mute_when_ready_workaround callback in case it never fired.
+    libvlc_event_detach(
+        libvlc_media_player_event_manager(player),
+        libvlc_MediaPlayerPlaying,
+        VLCWidget::mute_when_ready_workaround,
+        nullptr
+    );
+
     libvlc_media_player_release(player);
     libvlc_release(instance);
 }
@@ -43,6 +51,20 @@ void VLCWidget::set_media(std::string path)
 bool VLCWidget::play()
 {
     libvlc_media_player_play(player);
+
+    // Apply mute workaround.
+    int bind_result = libvlc_event_attach(
+        libvlc_media_player_event_manager(player),
+        libvlc_MediaPlayerPlaying,
+        VLCWidget::mute_when_ready_workaround,
+        player
+    );
+
+    if (bind_result == 0)
+        std::cout << "Successfully bound mute_when_ready_workaround callback" << std::endl;
+    else
+        std::cout << "Failed to bind mute_when_ready_workaround callback" << std::endl;
+
     return libvlc_media_player_is_playing(player);
 }
 
@@ -78,17 +100,24 @@ bool VLCWidget::is_playing()
     return libvlc_media_player_is_playing(player);
 }
 
-double VLCWidget::get_volume()
+// Volume related functions are currently very unreliable, USE AT YOUR OWN RISK.
+int VLCWidget::get_volume()
 {
-    int vol_int = libvlc_audio_get_volume(player);
-
-    return double(vol_int) / 100.0;
+    return libvlc_audio_get_volume(player);
 }
 
-void VLCWidget::set_volume(double volume)
+bool VLCWidget::set_volume(int volume)
 {
-    int vol_int = int(std::round(volume * 100));
-    libvlc_audio_set_volume(player, vol_int);
+    auto tracks = libvlc_audio_get_track_description(player);
+
+    if (libvlc_audio_set_volume(player, volume) == 0)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 bool VLCWidget::is_muted()
@@ -129,4 +158,13 @@ void VLCWidget::bind_window(XID xid)
 {
     libvlc_media_player_set_xwindow(player, xid);
     libvlc_video_set_scale(player, 0);
+}
+
+void VLCWidget::mute_when_ready_workaround(const struct libvlc_event_t* event, void* p_player)
+{
+    libvlc_media_player_t* player = static_cast<libvlc_media_player_t*>(p_player);
+    if (libvlc_audio_set_volume(player, 0) == 0)
+        std::cout << "Workaround volume set successfully" << std::endl;
+    else
+        std::cout << "Failed to set volume in workaround" << std::endl;
 }

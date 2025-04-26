@@ -33,8 +33,11 @@ public:
     bool is_playing();
 
     // Volume functions currently broken.
-    double get_volume();
-    void set_volume(double volume);
+    // This is probably due to the player needing to initialize fully before volume can be adjusted.
+    // This would be resolved best by implementing a robust callback system for handling events like this,
+    // so do that when you get the chance.
+    int get_volume();
+    bool set_volume(int volume);
 
     bool is_muted();
     void mute();
@@ -42,4 +45,9 @@ public:
     void toggle_mute();
 
     void bind_window(XID xid);
+
+private:
+    // Mute workaround callback.
+    // p_player should point to the player.
+    static void mute_when_ready_workaround(const struct libvlc_event_t* event, void* p_player);
 };

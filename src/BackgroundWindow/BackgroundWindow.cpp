@@ -39,6 +39,7 @@ bool BackgroundWindow::check_ready()
         XID win_id = gdk_x11_window_get_xid(window->gobj());
         vlc->bind_window(win_id);
         vlc->play();
+
         return false; // Don't run this callback again.
     }
     return true; // Check again later.
