@@ -3,9 +3,6 @@
 
 VLCWidget::VLCWidget() : Gtk::DrawingArea()
 {
-    this->height = height;
-    this->width = width;
-
     bound = false;
     media_path = "";
 
@@ -168,6 +165,13 @@ void VLCWidget::bind_window(XID xid)
     libvlc_media_player_set_xwindow(player, xid);
     libvlc_video_set_scale(player, 0);
     bound = true;
+}
+
+void VLCWidget::unbind_window()
+{
+    libvlc_media_player_stop(player);
+    libvlc_media_player_set_xwindow(player, 0);
+    bound = false;
 }
 
 // Rebind window on redraw to prevent flickering.

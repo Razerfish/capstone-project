@@ -13,11 +13,7 @@ public:
     VLCWidget();
     virtual ~VLCWidget();
 
-protected:
-    int
-        height,
-        width;
-    
+protected:    
     bool bound;
 
     std::string media_path;
@@ -50,6 +46,7 @@ public:
     void toggle_mute();
 
     void bind_window(XID xid);
+    void unbind_window();
 
 private:
     // Signal handler overrides.
