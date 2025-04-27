@@ -25,7 +25,5 @@ int main(int argc, char *argv[])
 
     BackgroundWindow window = BackgroundWindow(path);
 
-    auto windows = app->get_windows();
-
     return app->run(window);
 }
