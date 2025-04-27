@@ -4,26 +4,12 @@
 
 #include "AppInfo.h"
 #include "BackgroundWindow.h"
+#include "Application.h"
 
 int main(int argc, char *argv[])
 {
-    std::cout << "Version: " << AppInfo_VERSION_MAJOR << "."
-        << AppInfo_VERSION_MINOR << std::endl;
-
-    std::string path;
-    if (argc == 1)
-    {
-        std::cout << "Must specify a video to display" << std::endl;
-        return 1;
-    }
-    path = std::string(argv[1]);
-
     int dummy_argc = 1;
-    auto app =
-        Gtk::Application::create(dummy_argc, argv,
-                                 "org.Razerfish.AnimWallpapers.testing");
+    Application app = Application(dummy_argc, argv, AppInfo_IDENTIFIER);
 
-    BackgroundWindow window = BackgroundWindow(path);
-
-    return app->run(window);
+    return app.run();
 }

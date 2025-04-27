@@ -1,5 +1,7 @@
 #include "BackgroundWindow.h"
 
+#include "VLCWidget.h"
+
 // BackgroundWindow DOES NOT take ownership of player, you need to deallocate it yourself.
 BackgroundWindow::BackgroundWindow(VLCWidget* player)
 {

@@ -15,6 +15,7 @@ public:
 
 protected:    
     bool bound;
+    bool ever_played;
     double volume;
 
     std::string media_path;

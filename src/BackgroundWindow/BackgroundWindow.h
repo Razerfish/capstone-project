@@ -7,7 +7,7 @@
 
 #include <string>
 
-#include "VLCWidget.h"
+class VLCWidget;
 
 class BackgroundWindow : public Gtk::ApplicationWindow
 {

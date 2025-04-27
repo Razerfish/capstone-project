@@ -4,6 +4,7 @@
 VLCWidget::VLCWidget() : Gtk::DrawingArea()
 {
     bound = false;
+    ever_played = false;
     media_path = "";
     volume = 0.0;
 
@@ -13,13 +14,16 @@ VLCWidget::VLCWidget() : Gtk::DrawingArea()
 
 VLCWidget::~VLCWidget()
 {
-    // Cleanup set_initial_volume_callback callback in case it never fired.
-    libvlc_event_detach(
-        libvlc_media_player_event_manager(player),
-        libvlc_MediaPlayerPlaying,
-        VLCWidget::set_initial_volume_callback,
-        nullptr
-    );
+    if (ever_played)
+    {
+        // Cleanup set_initial_volume_callback callback in case it never fired.
+        libvlc_event_detach(
+            libvlc_media_player_event_manager(player),
+            libvlc_MediaPlayerPlaying,
+            VLCWidget::set_initial_volume_callback,
+            nullptr
+        );
+    }
 
     libvlc_media_player_release(player);
     libvlc_release(instance);
@@ -27,6 +31,7 @@ VLCWidget::~VLCWidget()
 
 void VLCWidget::play()
 {
+    ever_played = true;
     libvlc_media_player_play(player);
 
     int bind_result = libvlc_event_attach(
