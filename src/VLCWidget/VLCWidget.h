@@ -45,6 +45,7 @@ public:
     void unmute();
     void toggle_mute();
 
+    bool is_bound();
     void bind_window(XID xid);
     void unbind_window();
 

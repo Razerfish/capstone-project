@@ -22,14 +22,14 @@ protected:
 
     VLCWidget* player;
 
-    sigc::slot<bool> check_ready_slot = sigc::mem_fun(*this, &BackgroundWindow::check_ready_callback);
+    sigc::slot<bool> bind_when_ready_slot = sigc::mem_fun(*this, &BackgroundWindow::bind_when_ready_callback);
     sigc::slot<void> swap_media_slot;
     
-    sigc::connection check_ready_conn;
+    sigc::connection bind_when_ready_conn;
 
     // Callbacks
-    bool check_ready();
-    bool check_ready_callback();
+    bool bind_if_ready();
+    bool bind_when_ready_callback();
     void swap_media(std::string path);
 
     // Static helper functions.

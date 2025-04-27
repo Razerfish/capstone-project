@@ -160,6 +160,11 @@ void VLCWidget::toggle_mute()
     }
 }
 
+bool VLCWidget::is_bound()
+{
+    return bound;
+}
+
 void VLCWidget::bind_window(XID xid)
 {
     libvlc_media_player_set_xwindow(player, xid);

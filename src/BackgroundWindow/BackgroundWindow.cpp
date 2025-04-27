@@ -23,11 +23,11 @@ BackgroundWindow::BackgroundWindow(VLCWidget* player)
 BackgroundWindow::~BackgroundWindow()
 {
     swap_media_slot.disconnect();
-    check_ready_conn.disconnect();
+    bind_when_ready_conn.disconnect();
     player->unbind_window();
 }
 
-bool BackgroundWindow::check_ready()
+bool BackgroundWindow::bind_if_ready()
 {
     Glib::RefPtr<Gdk::Window> window = get_window();
 
@@ -43,13 +43,13 @@ bool BackgroundWindow::check_ready()
     return false; // Binding unsuccessful.
 }
 
-bool BackgroundWindow::check_ready_callback()
+bool BackgroundWindow::bind_when_ready_callback()
 {
     /*
     Callback version of check_ready, returns false if binding was successful
     to indicate that the callback should not be repeated.
     */
-    return !(check_ready());
+    return !(bind_if_ready());
 }
 
 void BackgroundWindow::swap_media(std::string path)
@@ -85,6 +85,9 @@ void BackgroundWindow::get_resolution(Glib::RefPtr<const Gdk::Display> display, 
 
 void BackgroundWindow::bind_when_ready()
 {
-    // Register a callback to wait a bit and check if we're ready to bind VLC.
-    check_ready_conn = Glib::signal_timeout().connect(check_ready_slot, 10);
+    if (!bind_if_ready())
+    {
+        // Register a callback to wait a bit and try again.
+        bind_when_ready_conn = Glib::signal_timeout().connect(bind_when_ready_slot, 10);
+    }
 }
