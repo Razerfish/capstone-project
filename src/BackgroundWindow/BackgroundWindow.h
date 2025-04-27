@@ -23,8 +23,6 @@ protected:
     VLCWidget* player;
 
     sigc::slot<bool> bind_when_ready_slot = sigc::mem_fun(*this, &BackgroundWindow::bind_when_ready_callback);
-    sigc::slot<void> swap_media_slot;
-    
     sigc::connection bind_when_ready_conn;
 
     // Callbacks

@@ -22,7 +22,6 @@ BackgroundWindow::BackgroundWindow(VLCWidget* player)
 
 BackgroundWindow::~BackgroundWindow()
 {
-    swap_media_slot.disconnect();
     bind_when_ready_conn.disconnect();
     player->unbind_window();
 }
@@ -50,12 +49,6 @@ bool BackgroundWindow::bind_when_ready_callback()
     to indicate that the callback should not be repeated.
     */
     return !(bind_if_ready());
-}
-
-void BackgroundWindow::swap_media(std::string path)
-{
-    std::cout << "Swapping media" << std::endl;
-    player->set_media_from_path(path);
 }
 
 void BackgroundWindow::get_resolution(Glib::RefPtr<const Gdk::Display> display, int& height, int& width)
