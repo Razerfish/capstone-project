@@ -4,7 +4,6 @@
 VLCWidget::VLCWidget() : Gtk::DrawingArea()
 {
     bound = false;
-    ever_played = false;
     media_path = "";
     volume = 0.0;
 
@@ -14,41 +13,13 @@ VLCWidget::VLCWidget() : Gtk::DrawingArea()
 
 VLCWidget::~VLCWidget()
 {
-    if (ever_played)
-    {
-        // Cleanup set_initial_volume_callback callback in case it never fired.
-        libvlc_event_detach(
-            libvlc_media_player_event_manager(player),
-            libvlc_MediaPlayerPlaying,
-            VLCWidget::set_initial_volume_callback,
-            nullptr
-        );
-    }
-
     libvlc_media_player_release(player);
     libvlc_release(instance);
 }
 
 void VLCWidget::play()
 {
-    ever_played = true;
     libvlc_media_player_play(player);
-
-    int bind_result = libvlc_event_attach(
-        libvlc_media_player_event_manager(player),
-        libvlc_MediaPlayerPlaying,
-        VLCWidget::set_initial_volume_callback,
-        player
-    );
-
-    if (bind_result == 0)
-    {
-        std::cout << "Successfully bound set_initial_volume_callback callback" << std::endl;
-    }
-    else
-    {
-        std::cout << "Failed to bind set_initial_volume_callback callback" << std::endl;
-    }
 }
 
 void VLCWidget::set_media_from_path(std::string path)
@@ -163,19 +134,4 @@ bool VLCWidget::on_draw(const Cairo::RefPtr<Cairo::Context> &ctr)
     }
 
     return true;
-}
-
-void VLCWidget::set_initial_volume_callback(const struct libvlc_event_t* event, void* vlc_widget)
-{
-    VLCWidget* widget = static_cast<VLCWidget*>(vlc_widget);
-    int volume = (int)(widget->volume * 100);
-
-    if (libvlc_audio_set_volume(widget->player, volume) == volume)
-    {
-        std::cout << "Initial volume set successfully" << std::endl;
-    }
-    else
-    {
-        std::cout << "Failed to set initial volume, video might not have any audio tracks" << std::endl;
-    }
 }

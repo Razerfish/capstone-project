@@ -15,7 +15,6 @@ public:
 
 protected:    
     bool bound;
-    bool ever_played;
     double volume;
 
     std::string media_path;
@@ -45,8 +44,4 @@ public:
 protected:
     // Signal handler overrides.
     bool on_draw(const Cairo::RefPtr<Cairo::Context> &ctr) override;
-
-    // Mute workaround callback.
-    // p_player should point to an instance of this class.
-    static void set_initial_volume_callback(const struct libvlc_event_t* event, void* vlc_widget);
 };
