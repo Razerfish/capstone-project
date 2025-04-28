@@ -7,12 +7,12 @@
 
 #include <string>
 
-#include "VLCWidget.h"
+class VLCWidget;
 
 class BackgroundWindow : public Gtk::ApplicationWindow
 {
 public:
-    BackgroundWindow(std::string path);
+    BackgroundWindow(VLCWidget* player);
     virtual ~BackgroundWindow();
 
 protected:
@@ -20,17 +20,18 @@ protected:
         height,
         width;
 
-    VLCWidget* vlc;
+    VLCWidget* player;
 
-    sigc::slot<bool> check_ready_slot = sigc::mem_fun(*this, &BackgroundWindow::check_ready);
-    sigc::slot<void> swap_media_slot;
-    
-    sigc::connection check_ready_callback;
+    sigc::slot<bool> bind_when_ready_slot = sigc::mem_fun(*this, &BackgroundWindow::bind_when_ready_callback);
+    sigc::connection bind_when_ready_conn;
 
     // Callbacks
-    bool check_ready();
-    void swap_media(std::string path);
+    bool bind_if_ready();
+    bool bind_when_ready_callback();
 
     // Static helper functions.
     static void get_resolution(Glib::RefPtr<const Gdk::Display> display, int& height, int& width);
+
+public:
+    void bind_when_ready();
 };

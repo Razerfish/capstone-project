@@ -8,10 +8,13 @@ link_directories(${GTKMM_LIBRARIES})
 
 add_subdirectory(BackgroundWindow)
 add_subdirectory(VLCWidget)
+add_subdirectory(Application)
+add_subdirectory(ControlWindow)
 
 add_executable(main main.cpp)
 
-target_link_libraries(main PUBLIC BackgroundWindow)
+# TODO: Remove Background window from target_link_libraries
+target_link_libraries(main PUBLIC BackgroundWindow Application)
 target_include_directories(main PUBLIC
     "${PROJECT_BINARY_DIR}/src"
 )
