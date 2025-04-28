@@ -14,39 +14,69 @@ Application::Application(int argc, char *argv[], std::string identifier)
     background = new BackgroundWindow(player);
     controller = new ControlWindow();
 
-    
+    controller->signal_file_selected().connect(media_set_slot);
+    controller->signal_volume_set().connect(volume_set_slot);
+    controller->signal_mute_state_changed().connect(mute_state_slot);
+    controller->signal_play_state_changed().connect(play_state_slot);
 }
 
 Application::~Application()
 {
+    media_set_slot.disconnect();
+    volume_set_slot.disconnect();
+    mute_state_slot.disconnect();
+    play_state_slot.disconnect();
+
     delete controller;
     delete background;
     delete player;
 }
 
 // Callbacks
-void Application::update_media(Gtk::FileChooserButton* chooser)
+void Application::set_media(std::string media_path)
 {
-
+    player->set_media_from_path(media_path);
+    player->play();
 }
 
-void Application::update_volume(double volume)
+void Application::set_volume(double volume)
 {
-
+    stored_volume = volume;
+    player->set_volume(volume);
 }
 
 void Application::set_mute(bool state)
 {
-    
+    if (state) // Mute
+    {
+        player->set_volume(0.0);
+    }
+    else // Unmute
+    {
+        player->set_volume(stored_volume);
+    }
 }
 
 void Application::toggle_play()
 {
-
+    if (player->is_playing())
+    {
+        player->pause();
+    }
+    else
+    {
+        player->unpause();
+    }
 }
 
 int Application::run()
 {
-    return app->run(*controller);
-    return 0;
+    app->signal_startup().connect([&]{
+        controller->show();
+        app->add_window(*controller);
+    });
+
+    background->show();
+    background->bind_when_ready();
+    return app->run(*background);
 }

@@ -25,11 +25,15 @@ protected:
     VLCWidget* player;
     ControlWindow* controller;
 
-    
+    // Signal handlers.
+    sigc::slot<void, std::string> media_set_slot = sigc::mem_fun(*this, &Application::set_media);
+    sigc::slot<void, double> volume_set_slot = sigc::mem_fun(*this, &Application::set_volume);
+    sigc::slot<void, bool> mute_state_slot = sigc::mem_fun(*this, &Application::set_mute);
+    sigc::slot<void> play_state_slot = sigc::mem_fun(*this, &Application::toggle_play);
 
     // Callbacks
-    void update_media(Gtk::FileChooserButton* chooser);
-    void update_volume(double volume);
+    void set_media(std::string media_path);
+    void set_volume(double volume);
     void set_mute(bool state);
     void toggle_play();
 

@@ -155,7 +155,7 @@ sigc::signal<void, bool> ControlWindow::signal_mute_state_changed()
     return m_signal_mute_state_changed;
 }
 
-sigc::signal<void> ControlWindow::play_state_changed()
+sigc::signal<void> ControlWindow::signal_play_state_changed()
 {
     return m_play_state_changed;
 }

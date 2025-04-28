@@ -68,5 +68,5 @@ public:
     sigc::signal<void, std::string> signal_file_selected();
     sigc::signal<void, double> signal_volume_set();
     sigc::signal<void, bool> signal_mute_state_changed();
-    sigc::signal<void> play_state_changed();
+    sigc::signal<void> signal_play_state_changed();
 };
