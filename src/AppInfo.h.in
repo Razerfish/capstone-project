@@ -1,0 +1,4 @@
+#define AppInfo_VERSION_MAJOR @AnimWallpapers_VERSION_MAJOR@
+#define AppInfo_VERSION_MINOR @AnimWallpapers_VERSION_MINOR@
+
+#define AppInfo_IDENTIFIER "dev.Razerfish.Zoetrope"
