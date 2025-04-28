@@ -28,7 +28,6 @@ protected:
     // Callbacks
     bool bind_if_ready();
     bool bind_when_ready_callback();
-    void swap_media(std::string path);
 
     // Static helper functions.
     static void get_resolution(Glib::RefPtr<const Gdk::Display> display, int& height, int& width);

@@ -13,6 +13,8 @@ Application::Application(int argc, char *argv[], std::string identifier)
     player = new VLCWidget();
     background = new BackgroundWindow(player);
     controller = new ControlWindow();
+
+    
 }
 
 Application::~Application()
@@ -23,7 +25,7 @@ Application::~Application()
 }
 
 // Callbacks
-void Application::update_media(std::string path)
+void Application::update_media(Gtk::FileChooserButton* chooser)
 {
 
 }
